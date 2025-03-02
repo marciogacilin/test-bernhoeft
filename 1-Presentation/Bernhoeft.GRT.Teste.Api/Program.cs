@@ -21,6 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 if (Debugger.IsAttached)
     builder.Configuration.AddJsonFile("appsettings.Debugger.json", true);
 
+// Adicionando Exception Filter customizado para centralizar as exceções geradas do tipo ValidationException
 builder.Services.AddMvc(opt =>
 {
     opt.Filters.Add(new CustomExceptionFilter());
@@ -96,6 +97,7 @@ builder.Services.AddMediatR(options =>
     options.RegisterServicesFromAssemblyContaining<GetAvisosRequest>();
 });
 
+// Configurando o ValidationBehavior para impedir que comandos inválidos sejam processados
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Adicionar Context de Conexão com Banco de Dados SqlServer GRT.
